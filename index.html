@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lịch Trình Đà Lạt 2025</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; min-height: 100vh; }
+  .app { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  .hero { background: linear-gradient(135deg, #1a4a3a 0%, #0d2e22 60%, #0a2218 100%); padding: 2rem 1.5rem 3rem; position: relative; overflow: hidden; border-radius: 16px; margin-bottom: 1.5rem; }
+  .hero::before { content: ''; position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; border-radius: 50%; background: rgba(29,158,117,0.15); }
+  .hero::after { content: ''; position: absolute; bottom: -20px; left: 30%; width: 120px; height: 120px; border-radius: 50%; background: rgba(29,158,117,0.08); }
+  .hero-label { font-size: 11px; letter-spacing: 2px; color: #5DCAA5; text-transform: uppercase; margin-bottom: 8px; }
+  .hero-title { font-size: 28px; font-weight: 500; color: #fff; line-height: 1.2; margin-bottom: 6px; }
+  .hero-sub { font-size: 14px; color: rgba(255,255,255,0.55); margin-bottom: 1.5rem; }
+  .hero-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .hero-stat-val { font-size: 20px; font-weight: 500; color: #9FE1CB; }
+  .hero-stat-label { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .filter-btn { padding: 6px 14px; border-radius: 20px; border: 0.5px solid #ddd; background: #fff; color: #555; font-size: 13px; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+  .filter-btn:hover { border-color: #aaa; color: #111; }
+  .filter-btn.active { background: #1D9E75; border-color: #1D9E75; color: #fff; }
+  .day-block { margin-bottom: 1.5rem; }
+  .day-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 0.5px solid #e0e0e0; }
+  .day-badge { background: #E1F5EE; color: #085041; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+  .day-title { font-size: 15px; font-weight: 500; color: #1a1a1a; }
+  .day-count { font-size: 12px; color: #888; margin-left: auto; white-space: nowrap; }
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 1px; background: #e0e0e0; }
+  .item { position: relative; margin-bottom: 10px; }
+  .item-dot { position: absolute; left: -24px; top: 14px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid #f5f5f0; z-index: 1; }
+  .item-card { background: #fff; border: 0.5px solid #e0e0e0; border-radius: 12px; padding: 12px 14px; cursor: pointer; transition: border-color 0.15s; }
+  .item-card:hover { border-color: #aaa; }
+  .item-card.expanded { border-color: #1D9E75; }
+  .item-top { display: flex; align-items: flex-start; gap: 10px; }
+  .item-time { font-size: 12px; color: #888; white-space: nowrap; min-width: 36px; margin-top: 2px; }
+  .item-main { flex: 1; min-width: 0; }
+  .item-name { font-size: 14px; font-weight: 500; color: #1a1a1a; line-height: 1.4; display: flex; align-items: center; gap: 6px; }
+  .item-icon { font-size: 15px; flex-shrink: 0; }
+  .item-loc { font-size: 12px; color: #555; margin-top: 3px; display: flex; align-items: center; gap: 4px; }
+  .item-badges { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 6px; }
+  .cat-badge { font-size: 10px; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
+  .price-chip { font-size: 11px; color: #0F6E56; background: #E1F5EE; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
+  .cost-chip { font-size: 11px; color: #555; background: #f0f0ec; padding: 2px 7px; border-radius: 10px; }
+  .chevron { font-size: 14px; color: #aaa; flex-shrink: 0; margin-top: 4px; transition: transform 0.2s; line-height: 1; }
+  .item-card.expanded .chevron { transform: rotate(180deg); }
+  .item-expand { margin-top: 10px; padding-top: 10px; border-top: 0.5px solid #e0e0e0; display: none; }
+  .item-card.expanded .item-expand { display: block; }
+  .expand-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 12px; }
+  .expand-label { color: #888; min-width: 120px; display: flex; align-items: center; gap: 4px; }
+  .expand-val { color: #1a1a1a; flex: 1; }
+  .expand-viral { background: #E1F5EE; border-radius: 8px; padding: 8px 10px; font-size: 12px; color: #085041; margin-top: 6px; }
+  .expand-viral strong { color: #0F6E56; display: block; margin-bottom: 3px; font-size: 11px; letter-spacing: 0.5px; }
+  .summary-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; margin-bottom: 1.25rem; }
+  .summary-card { background: #fff; border-radius: 8px; padding: 10px 12px; border: 0.5px solid #e0e0e0; }
+  .summary-val { font-size: 18px; font-weight: 500; display: flex; align-items: center; gap: 5px; }
+  .summary-lbl { font-size: 11px; color: #888; margin-top: 2px; }
+  .search-wrap { position: relative; margin-bottom: 1rem; }
+  .search-wrap input { width: 100%; padding: 9px 12px 9px 36px; border: 0.5px solid #ddd; border-radius: 8px; font-size: 13px; background: #fff; color: #1a1a1a; font-family: inherit; outline: none; }
+  .search-wrap input:focus { border-color: #1D9E75; }
+  .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 15px; pointer-events: none; }
+  .no-results { text-align: center; padding: 2rem; color: #888; font-size: 13px; }
+  @media (max-width: 480px) {
+    .app { padding: 1rem 0.75rem 2rem; }
+    .hero { padding: 1.5rem 1.25rem 2rem; }
+    .hero-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <div class="hero-label">🏔️ Hành trình khám phá</div>
+    <div class="hero-title">Đà Lạt 2025</div>
+    <div class="hero-sub" id="hero-sub">Đang tải lịch trình...</div>
+    <div class="hero-stats" id="hero-stats"></div>
+  </div>
+  <div class="summary-bar" id="summary-bar"></div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search-input" placeholder="Tìm hoạt động, địa điểm..." aria-label="Tìm kiếm">
+  </div>
+  <div class="filters" id="filters"></div>
+  <div id="main-content">
+    <div style="text-align:center;padding:3rem;color:#888;font-size:14px;">
+      <div style="font-size:32px;margin-bottom:12px;">📍</div>
+      Đang tải lịch trình Đà Lạt...
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbxsIjQz-yypPWnawWzKKFG0Ttb_CtKdD_KWhtKDk0PZwf8HSS8kOTFpxpBPA2FC5RmQ/exec';
+
+const CAT_COLORS = {
+  'Check-in':  { bg: '#E1F5EE', color: '#085041' },
+  'Ăn uống':   { bg: '#FAEEDA', color: '#633806' },
+  'Tham quan': { bg: '#E6F1FB', color: '#042C53' },
+  'Di chuyển': { bg: '#F1EFE8', color: '#2C2C2A' },
+  'Mua sắm':   { bg: '#FBEAF0', color: '#4B1528' },
+  'Check-out': { bg: '#FCEBEB', color: '#501313' },
+  'Nghỉ ngơi': { bg: '#EEEDFE', color: '#26215C' },
+  'Hoạt động': { bg: '#EAF3DE', color: '#173404' },
+};
+const CAT_EMOJI = {
+  'Check-in':  '🏠',
+  'Ăn uống':   '🍜',
+  'Tham quan': '📷',
+  'Di chuyển': '🚗',
+  'Mua sắm':   '🛍️',
+  'Check-out': '🚪',
+  'Nghỉ ngơi': '🌙',
+  'Hoạt động': '🚴',
+};
+const DOT_COLORS = {
+  'Check-in':  '#1D9E75',
+  'Ăn uống':   '#EF9F27',
+  'Tham quan': '#378ADD',
+  'Di chuyển': '#888780',
+  'Mua sắm':   '#D4537E',
+  'Check-out': '#E24B4A',
+  'Nghỉ ngơi': '#7F77DD',
+  'Hoạt động': '#639922',
+};
+
+let allData = [];
+let activeFilter = 'Tất cả';
+let searchQuery = '';
+
+async function loadData() {
+  try {
+    const res = await fetch(API);
+    const json = await res.json();
+    allData = json.data || [];
+    if (allData.length === 0) throw new Error('empty');
+    init();
+  } catch(e) {
+    allData = getSampleData();
+    console.log("đây là sample");
+    init();
+  }
+}
+
+function init() {
+  const days = [...new Set(allData.map(d => d['Ngày']))];
+  const cats = ['Tất cả', ...new Set(allData.map(d => d['Phân loại']).filter(Boolean))];
+
+  document.getElementById('hero-sub').textContent =
+    `${days.length} ngày · ${allData.length} hoạt động · Đà Lạt, Lâm Đồng`;
+
+  const totalCost = allData.reduce((acc, d) => {
+    const v = String(d['Thành tiền'] || '').replace(/[^0-9]/g, '');
+    return acc + (v ? parseInt(v) : 0);
+  }, 0);
+
+  document.getElementById('hero-stats').innerHTML = `
+    <div class="hero-stat"><div class="hero-stat-val">${days.length}</div><div class="hero-stat-label">Ngày</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">${allData.length}</div><div class="hero-stat-label">Hoạt động</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">${cats.length - 1}</div><div class="hero-stat-label">Loại</div></div>
+    ${totalCost > 0 ? `<div class="hero-stat"><div class="hero-stat-val">${(totalCost/1000).toFixed(0)}K</div><div class="hero-stat-label">Chi phí (VNĐ)</div></div>` : ''}
+  `;
+
+  const catCounts = {};
+  cats.slice(1).forEach(c => { catCounts[c] = allData.filter(d => d['Phân loại'] === c).length; });
+  document.getElementById('summary-bar').innerHTML = cats.slice(1).map(c => `
+    <div class="summary-card">
+      <div class="summary-val" style="color:${DOT_COLORS[c] || '#1a1a1a'}">
+        <span>${CAT_EMOJI[c] || '📌'}</span>${catCounts[c]}
+      </div>
+      <div class="summary-lbl">${c}</div>
+    </div>
+  `).join('');
+
+  const filterEl = document.getElementById('filters');
+  filterEl.innerHTML = cats.map(c =>
+    `<button class="filter-btn${c === activeFilter ? ' active' : ''}" data-cat="${c}">${c === 'Tất cả' ? '🗂️ ' : (CAT_EMOJI[c] ? CAT_EMOJI[c] + ' ' : '')}${c}</button>`
+  ).join('');
+  filterEl.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeFilter = btn.dataset.cat;
+      filterEl.querySelectorAll('.filter-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.cat === activeFilter)
+      );
+      render();
+    });
+  });
+
+  document.getElementById('search-input').addEventListener('input', e => {
+    searchQuery = e.target.value.toLowerCase();
+    render();
+  });
+
+  render();
+}
+
+function render() {
+  let data = allData;
+  if (activeFilter !== 'Tất cả') data = data.filter(d => d['Phân loại'] === activeFilter);
+  if (searchQuery) data = data.filter(d =>
+    String(d['Hoạt động chính'] || '').toLowerCase().includes(searchQuery) ||
+    String(d['Địa điểm / Ghi chú'] || '').toLowerCase().includes(searchQuery) ||
+    String(d['Ngày'] || '').toLowerCase().includes(searchQuery)
+  );
+
+  const days = [...new Set(data.map(d => d['Ngày']))];
+
+  if (data.length === 0) {
+    document.getElementById('main-content').innerHTML =
+      `<div class="no-results"><div style="font-size:28px;margin-bottom:8px">😶</div>Không tìm thấy hoạt động phù hợp.</div>`;
+    return;
+  }
+
+  document.getElementById('main-content').innerHTML = days.map(day => {
+    const items = data.filter(d => d['Ngày'] === day);
+    return `<div class="day-block">
+      <div class="day-header">
+        <span class="day-badge">📅 ${day}</span>
+        <span class="day-title">${getDayTitle(day)}</span>
+        <span class="day-count">${items.length} hoạt động</span>
+      </div>
+      <div class="timeline">${items.map((item, i) => renderItem(item, day + '-' + i)).join('')}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('main-content').querySelectorAll('.item-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('expanded'));
+  });
+}
+
+function renderItem(d, id) {
+  const cat   = d['Phân loại'] || '';
+  const style = CAT_COLORS[cat] || { bg: '#F1EFE8', color: '#2C2C2A' };
+  const dot   = DOT_COLORS[cat] || '#888780';
+  const emoji = CAT_EMOJI[cat] || '📌';
+  const price  = d['Đơn giá (1 ng)'];
+  const total  = d['Thành tiền'];
+  const viral  = d['🌟 Gợi ý dọc đường (Viral)'];
+  const dist   = d['Khoảng cách'];
+  const backup = d['Phương án dự phòng'];
+  const map    = d['Bản đồ'];
+
+  return `<div class="item">
+    <div class="item-dot" style="background:${dot};border-color:#f5f5f0;"></div>
+    <div class="item-card" id="${id}">
+      <div class="item-top">
+        <div class="item-time">${d['Thời gian'] || ''}</div>
+        <div class="item-main">
+          <div class="item-name">
+            <span class="item-icon">${emoji}</span>${d['Hoạt động chính'] || ''}
+          </div>
+          ${d['Địa điểm / Ghi chú'] ? `<div class="item-loc">📍 ${d['Địa điểm / Ghi chú']}</div>` : ''}
+          <div class="item-badges">
+            <span class="cat-badge" style="background:${style.bg};color:${style.color}">${cat}</span>
+            ${price && price !== '-' ? `<span class="price-chip">${price}</span>` : ''}
+            ${dist && dist !== '0 km' && dist !== '-' ? `<span class="cost-chip">🛣️ ${dist}</span>` : ''}
+          </div>
+        </div>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="item-expand">
+        ${backup && backup !== '-' ? `<div class="expand-row"><span class="expand-label">🔄 Dự phòng</span><span class="expand-val">${backup}</span></div>` : ''}
+        ${map ? `<div class="expand-row"><span class="expand-label">🗺️ Khu vực</span><span class="expand-val">${map}</span></div>` : ''}
+        ${total && total !== '-' ? `<div class="expand-row"><span class="expand-label">💰 Thành tiền</span><span class="expand-val" style="color:#0F6E56;font-weight:500">${total}</span></div>` : ''}
+        ${viral && viral !== '-' ? `<div class="expand-viral"><strong>⭐ Gợi ý viral</strong>${viral}</div>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function getDayTitle(day) {
+  if (/T6|Thứ 6|Fri/i.test(day)) return 'Khởi hành · Đặt chân đến Đà Lạt';
+  if (/T7|Thứ 7|Sat/i.test(day)) return 'Khám phá thành phố sương mù';
+  if (/CN|Sun/i.test(day))        return 'Trải nghiệm & Trở về';
+  return 'Hành trình Đà Lạt';
+}
+
+function getSampleData() {
+  return [
+    { "Ngày": "T6 26/06", "Thời gian": "05:50", "Hoạt động chính": "Tới Memory Inn", "Phương án dự phòng": "Ghé quán cafe 24/7 gần đó", "Phân loại": "Check-in", "Địa điểm / Ghi chú": "Gửi hành lý tại Lễ tân", "🌟 Gợi ý dọc đường (Viral)": "Khu vực Đặng Thái Thân", "Khoảng cách": "0 km", "Đơn giá (1 ng)": "-", "SL": 1, "Thành tiền": "-", "Bản đồ": "Trung tâm" },
+    { "Ngày": "T6 26/06", "Thời gian": "06:30", "Hoạt động chính": "Ăn sáng Bánh mì Đà Lạt", "Phương án dự phòng": "Phở Tùng", "Phân loại": "Ăn uống", "Địa điểm / Ghi chú": "Bánh mì Bơ Hoa", "🌟 Gợi ý dọc đường (Viral)": "Bánh mì xíu mại nổi tiếng TikTok", "Khoảng cách": "0.5 km", "Đơn giá (1 ng)": "25,000đ", "SL": 1, "Thành tiền": "25,000đ", "Bản đồ": "Trung tâm" },
+    { "Ngày": "T6 26/06", "Thời gian": "08:00", "Hoạt động chính": "Tham quan Hồ Xuân Hương", "Phương án dự phòng": "Đi bộ quanh hồ nếu trời đẹp", "Phân loại": "Tham quan", "Địa điểm / Ghi chú": "Hồ Xuân Hương – Trung tâm", "🌟 Gợi ý dọc đường (Viral)": "Sương mù sáng sớm cực đẹp", "Khoảng cách": "1.2 km", "Đơn giá (1 ng)": "Miễn phí", "SL": 1, "Thành tiền": "-", "Bản đồ": "Trung tâm" },
+    { "Ngày": "T6 26/06", "Thời gian": "10:00", "Hoạt động chính": "Chợ Đà Lạt – Mua đặc sản", "Phương án dự phòng": "-", "Phân loại": "Mua sắm", "Địa điểm / Ghi chú": "Chợ Đà Lạt tầng 2", "🌟 Gợi ý dọc đường (Viral)": "Bánh tráng nướng, atiso, dâu tây tươi", "Khoảng cách": "0.8 km", "Đơn giá (1 ng)": "100,000đ", "SL": 1, "Thành tiền": "100,000đ", "Bản đồ": "Trung tâm" },
+    { "Ngày": "T6 26/06", "Thời gian": "12:00", "Hoạt động chính": "Ăn trưa Lẩu bò Đà Lạt", "Phương án dự phòng": "Cơm niêu gần chợ", "Phân loại": "Ăn uống", "Địa điểm / Ghi chú": "Nhà hàng khu Nam Kỳ Khởi Nghĩa", "🌟 Gợi ý dọc đường (Viral)": "Lẩu bò nhúng dấm kiểu Đà Lạt", "Khoảng cách": "1 km", "Đơn giá (1 ng)": "120,000đ", "SL": 1, "Thành tiền": "120,000đ", "Bản đồ": "Trung tâm" },
+    { "Ngày": "T6 26/06", "Thời gian": "14:00", "Hoạt động chính": "Dinh II – Dinh Bảo Đại", "Phương án dự phòng": "Chùa Linh Phước thay thế", "Phân loại": "Tham quan", "Địa điểm / Ghi chú": "Dinh II, đường Triệu Việt Vương", "🌟 Gợi ý dọc đường (Viral)": "Check-in khuôn viên vintage cực hot", "Khoảng cách": "3.5 km", "Đơn giá (1 ng)": "30,000đ", "SL": 1, "Thành tiền": "30,000đ", "Bản đồ": "Phía nam" },
+    { "Ngày": "T6 26/06", "Thời gian": "17:00", "Hoạt động chính": "Check-in phòng Memory Inn", "Phương án dự phòng": "-", "Phân loại": "Check-in", "Địa điểm / Ghi chú": "Nhận phòng chính thức", "🌟 Gợi ý dọc đường (Viral)": "-", "Khoảng cách": "0 km", "Đơn giá (1 ng)": "350,000đ", "SL": 1, "Thành tiền": "350,000đ", "Bản đồ": "Trung tâm" },
+    { "Ngày": "T6 26/06", "Thời gian": "19:00", "Hoạt động chính": "Ăn tối – Phố đêm Đà Lạt", "Phương án dự phòng": "Khu ẩm thực Trương Công Định", "Phân loại": "Ăn uống", "Địa điểm / Ghi chú": "Khu Phan Bội Châu buổi tối", "🌟 Gợi ý dọc đường (Viral)": "Bánh tráng nướng + sữa đậu nành bắp", "Khoảng cách": "1 km", "Đơn giá (1 ng)": "80,000đ", "SL": 1, "Thành tiền": "80,000đ", "Bản đồ": "Trung tâm" },
+    { "Ngày": "T7 27/06", "Thời gian": "06:00", "Hoạt động chính": "Đạp xe quanh Hồ Tuyền Lâm", "Phương án dự phòng": "Thuê xe máy thay thế", "Phân loại": "Hoạt động", "Địa điểm / Ghi chú": "Hồ Tuyền Lâm – phía nam", "🌟 Gợi ý dọc đường (Viral)": "Sương sớm trên hồ, cảnh đẹp như tranh", "Khoảng cách": "8 km", "Đơn giá (1 ng)": "50,000đ", "SL": 1, "Thành tiền": "50,000đ", "Bản đồ": "Phía nam" },
+    { "Ngày": "T7 27/06", "Thời gian": "09:00", "Hoạt động chính": "Vườn hoa Đà Lạt", "Phương án dự phòng": "Núi Lang Biang", "Phân loại": "Tham quan", "Địa điểm / Ghi chú": "Vườn hoa thành phố – Phù Đổng Thiên Vương", "🌟 Gợi ý dọc đường (Viral)": "Hoa mimosa, hoa dã quỳ mùa này đẹp", "Khoảng cách": "2 km", "Đơn giá (1 ng)": "40,000đ", "SL": 1, "Thành tiền": "40,000đ", "Bản đồ": "Trung tâm" },
+    { "Ngày": "T7 27/06", "Thời gian": "12:00", "Hoạt động chính": "Ăn trưa Bún bò Huế", "Phương án dự phòng": "Bánh căn Đà Lạt", "Phân loại": "Ăn uống", "Địa điểm / Ghi chú": "Quán quen khu Bùi Thị Xuân", "🌟 Gợi ý dọc đường (Viral)": "Bún bò kèm rau sống Đà Lạt tươi giòn", "Khoảng cách": "1.5 km", "Đơn giá (1 ng)": "50,000đ", "SL": 1, "Thành tiền": "50,000đ", "Bản đồ": "Trung tâm" },
+    { "Ngày": "T7 27/06", "Thời gian": "14:30", "Hoạt động chính": "Đồi Robin – Sunset", "Phương án dự phòng": "Cầu Đất Farm", "Phân loại": "Tham quan", "Địa điểm / Ghi chú": "Đường Khe Sanh – đồi thông", "🌟 Gợi ý dọc đường (Viral)": "Golden hour trên đồi thông – must visit", "Khoảng cách": "4 km", "Đơn giá (1 ng)": "Miễn phí", "SL": 1, "Thành tiền": "-", "Bản đồ": "Phía tây" },
+    { "Ngày": "T7 27/06", "Thời gian": "19:00", "Hoạt động chính": "Ăn tối – Mì quảng Đà Lạt", "Phương án dự phòng": "Pizza leo & bếp lửa", "Phân loại": "Ăn uống", "Địa điểm / Ghi chú": "Quán mì Hoa Trung, gần chợ", "🌟 Gợi ý dọc đường (Viral)": "Ăn tối ngắm phố xá lên đèn Đà Lạt", "Khoảng cách": "0.5 km", "Đơn giá (1 ng)": "60,000đ", "SL": 1, "Thành tiền": "60,000đ", "Bản đồ": "Trung tâm" },
+    { "Ngày": "CN 28/06", "Thời gian": "07:00", "Hoạt động chính": "Cafe sáng – Cà phê Tùng", "Phương án dự phòng": "The Married Beans", "Phân loại": "Ăn uống", "Địa điểm / Ghi chú": "Cà phê Tùng – 6 Khu Hòa Bình", "🌟 Gợi ý dọc đường (Viral)": "Quán cafe 60 năm tuổi, icon của Đà Lạt", "Khoảng cách": "0.5 km", "Đơn giá (1 ng)": "35,000đ", "SL": 1, "Thành tiền": "35,000đ", "Bản đồ": "Trung tâm" },
+    { "Ngày": "CN 28/06", "Thời gian": "09:00", "Hoạt động chính": "Ga Đà Lạt – Check-in", "Phương án dự phòng": "-", "Phân loại": "Tham quan", "Địa điểm / Ghi chú": "Ga xe lửa cổ điển Đà Lạt", "🌟 Gợi ý dọc đường (Viral)": "Tàu hỏa cổ chạy Đà Lạt - Trại Mát", "Khoảng cách": "2.5 km", "Đơn giá (1 ng)": "108,000đ", "SL": 1, "Thành tiền": "108,000đ", "Bản đồ": "Phía đông" },
+    { "Ngày": "CN 28/06", "Thời gian": "12:00", "Hoạt động chính": "Ăn trưa & mua đặc sản về", "Phương án dự phòng": "-", "Phân loại": "Ăn uống", "Địa điểm / Ghi chú": "Cơm gà Đà Lạt + mua quà", "🌟 Gợi ý dọc đường (Viral)": "Mứt dâu, trà atiso, khoai lang sấy", "Khoảng cách": "1 km", "Đơn giá (1 ng)": "150,000đ", "SL": 1, "Thành tiền": "150,000đ", "Bản đồ": "Trung tâm" },
+    { "Ngày": "CN 28/06", "Thời gian": "14:00", "Hoạt động chính": "Check-out & di chuyển về", "Phương án dự phòng": "-", "Phân loại": "Check-out", "Địa điểm / Ghi chú": "Trả phòng Memory Inn, ra bến xe", "🌟 Gợi ý dọc đường (Viral)": "Ngắm đèo Ngoạn Mục trên đường về", "Khoảng cách": "0 km", "Đơn giá (1 ng)": "-", "SL": 1, "Thành tiền": "-", "Bản đồ": "Trung tâm" }
+  ];
+}
+
+loadData();
+</script>
+</body>
+</html>

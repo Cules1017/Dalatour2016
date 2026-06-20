@@ -95,16 +95,17 @@ const API = 'https://script.google.com/macros/s/AKfycbxsIjQz-yypPWnawWzKKFG0Ttb_
 
 function formatTime(val) {
   if (!val) return '';
-  // Nếu là ISO string (có chứa 'T'), parse và convert sang giờ HCM (UTC+7)
+
   if (String(val).includes('T')) {
     const d = new Date(val);
     if (!isNaN(d)) {
-      const hcm = new Date(d.getTime() + 7 * 60 * 60 * 1000);
-      const h = String(hcm.getUTCHours()).padStart(2, '0');
-      const m = String(hcm.getUTCMinutes()).padStart(2, '0');
+
+      const h = String(d.getUTCHours()).padStart(2, '0');
+      const m = String(d.getUTCMinutes()).padStart(2, '0');
       return `${h}:${m}`;
     }
   }
+  // Google Sheets lưu giờ dạng 1899-12-30THH:MM:00Z, lấy thẳng UTC là đúng
   // Nếu đã là dạng HH:MM thì giữ nguyên
   return String(val).substring(0, 5);
 }
@@ -153,7 +154,7 @@ async function loadData() {
     init();
   } catch(e) {
     allData = getSampleData();
-    console.log("Failed to load data from API, using sample data instead.", e);
+    console.warn('Không thể tải dữ liệu từ Google Sheets, đang sử dụng dữ liệu mẫu cứng trong code.');
     init();
   }
 }

@@ -93,6 +93,22 @@
 <script>
 const API = 'https://script.google.com/macros/s/AKfycbxsIjQz-yypPWnawWzKKFG0Ttb_CtKdD_KWhtKDk0PZwf8HSS8kOTFpxpBPA2FC5RmQ/exec';
 
+function formatTime(val) {
+  if (!val) return '';
+  // Nếu là ISO string (có chứa 'T'), parse và convert sang giờ HCM (UTC+7)
+  if (String(val).includes('T')) {
+    const d = new Date(val);
+    if (!isNaN(d)) {
+      const hcm = new Date(d.getTime() + 7 * 60 * 60 * 1000);
+      const h = String(hcm.getUTCHours()).padStart(2, '0');
+      const m = String(hcm.getUTCMinutes()).padStart(2, '0');
+      return `${h}:${m}`;
+    }
+  }
+  // Nếu đã là dạng HH:MM thì giữ nguyên
+  return String(val).substring(0, 5);
+}
+
 const CAT_COLORS = {
   'Check-in':  { bg: '#E1F5EE', color: '#085041' },
   'Ăn uống':   { bg: '#FAEEDA', color: '#633806' },
@@ -137,7 +153,7 @@ async function loadData() {
     init();
   } catch(e) {
     allData = getSampleData();
-    console.log("đây là sample");
+    console.log("Failed to load data from API, using sample data instead.", e);
     init();
   }
 }
@@ -244,7 +260,7 @@ function renderItem(d, id) {
     <div class="item-dot" style="background:${dot};border-color:#f5f5f0;"></div>
     <div class="item-card" id="${id}">
       <div class="item-top">
-        <div class="item-time">${d['Thời gian'] || ''}</div>
+        <div class="item-time">${formatTime(d['Thời gian'])}</div>
         <div class="item-main">
           <div class="item-name">
             <span class="item-icon">${emoji}</span>${d['Hoạt động chính'] || ''}
